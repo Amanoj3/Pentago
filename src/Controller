@@ -1,5 +1,0 @@
-interface Controller {
-    default void setChip() {
-
-    }
-}

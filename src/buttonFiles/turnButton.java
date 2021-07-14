@@ -2,7 +2,7 @@ package buttonFiles;
 
 import javax.swing.*;
 
-public class turnButton extends JButton {
+public class turnButton extends JButton implements Logic{
 
     private int quadrant;
     private String direction;

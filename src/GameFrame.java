@@ -2,10 +2,23 @@ import buttonFiles.*;
 
 import javax.swing.*;
 
-public class GameFrame extends JFrame implements Controller {
+public class GameFrame extends JFrame implements Logic {
+
+    private int moveCounter;
+    private String whoseTurn;
+
+    public void setWhoseTurn() {
+        if (moveCounter % 2 == 0) {
+            whoseTurn = "white";
+        }
+        else {
+            whoseTurn = "gray";
+        }
+    }
 
     GameFrame() {
-
+        whoseTurn = "white";
+        moveCounter = 0;
         int width = 6;
         int height = 6;
         ImageIcon boardImage = new ImageIcon("src/graphics/pentagoBoard.png");
@@ -44,6 +57,11 @@ public class GameFrame extends JFrame implements Controller {
                 slots[x][y] = currentButton;
                 currentButton.setBounds(currentX,currentY,50,50);
                 currentX = currentX + 100;
+                currentButton.addActionListener(e->{
+                    setChip(whoseTurn, currentButton);
+                    moveCounter++;
+                    setWhoseTurn();
+                });
                 this.add(currentButton);
             }
                 currentY = currentY - 100;

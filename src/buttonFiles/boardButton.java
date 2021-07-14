@@ -2,7 +2,7 @@ package buttonFiles;
 
 import javax.swing.*;
 
-public class boardButton extends JButton {
+public class boardButton extends JButton implements Logic {
     private final int xCoordinate;
     private final int yCoordinate;
     private Icon emptySlot;
@@ -44,9 +44,6 @@ public class boardButton extends JButton {
         whiteSlot = new ImageIcon("src/graphics/whiteSlot.png");
         white_Highlighted = new ImageIcon("src/graphics/whiteSlotHighlighted.png");
         this.setIcon(emptySlot);
-        this.addActionListener(e->{
-            System.out.println("You pressed button " + this.getxCoordinate() + "," + this.getyCoordinate());
-        });
     }
 
 }
