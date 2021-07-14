@@ -3,10 +3,14 @@ import buttonFiles.*;
 import javax.swing.*;
 
 public class GameFrame extends JFrame implements Logic {
-
+    private int[] quadrantInfo;
+    private String[] directionInfo;
+    private int[] xBoundInfo;
+    private int[] yBoundInfo;
+    private turnButton[] turnButtons;
     private int moveCounter;
     private String whoseTurn;
-
+    boolean chipMode; // disable slots when a player has to turn a quadrant
     public void setWhoseTurn() {
         if (moveCounter % 2 == 0) {
             whoseTurn = "white";
@@ -17,36 +21,27 @@ public class GameFrame extends JFrame implements Logic {
     }
 
     GameFrame() {
+        quadrantInfo = new int[]{1, 1, 2, 2, 3, 3, 4, 4};
+        directionInfo = new String[]{"left","right","left","right","left","right","left","right"};
+        xBoundInfo = new int[]{185,245,485,545,185,245,485,545};
+        yBoundInfo = new int[]{352,352,352,352,652,652,652,652};
+        chipMode = true;
         whoseTurn = "white";
         moveCounter = 0;
         int width = 6;
         int height = 6;
+        turnButtons = new turnButton[8];
         ImageIcon boardImage = new ImageIcon("src/graphics/pentagoBoard.png");
         JLabel boardLabel = new JLabel(boardImage);
 
         //the slots where players can put their respective pieces
         boardButton[][] slots = new boardButton[width][height];
-
-        //turn buttons for quadrant 1
-        turnButton turnButton1 = new turnButton(1, "left");
-        turnButton1.setBounds(185,352,60,20);
-        turnButton turnButton2 = new turnButton(1, "right");
-        turnButton2.setBounds(245,352,60,20);
-        //turn buttons for quadrant 2
-        turnButton turnButton3 = new turnButton(2, "left");
-        turnButton3.setBounds(485,352,60,20);
-        turnButton turnButton4 = new turnButton(2, "right");
-        turnButton4.setBounds(545,352,60,20);
-        //turn buttons for quadrant 3
-        turnButton turnButton5 = new turnButton(3, "left");
-        turnButton5.setBounds(185,652,60,20);
-        turnButton turnButton6 = new turnButton(3, "right");
-        turnButton6.setBounds(245,652,60,20);
-        // turn buttons for quadrant 4
-        turnButton turnButton7 = new turnButton(4, "left");
-        turnButton7.setBounds(485,652,60,20);
-        turnButton turnButton8 = new turnButton(4, "right");
-        turnButton8.setBounds(545,652,60,20);
+        // initialize all the turnButtons for each quadrant and add them to the frame
+        for (int i = 0; i < 8; i++) {
+            turnButton currentTurnButton = new turnButton(quadrantInfo[i],directionInfo[i]);
+            currentTurnButton.setBounds(xBoundInfo[i],yBoundInfo[i],60,20);
+            this.add(currentTurnButton);
+        }
 
         int currentY = 600;
 
@@ -66,14 +61,6 @@ public class GameFrame extends JFrame implements Logic {
             }
                 currentY = currentY - 100;
         }
-        this.add(turnButton1);
-        this.add(turnButton2);
-        this.add(turnButton3);
-        this.add(turnButton4);
-        this.add(turnButton5);
-        this.add(turnButton6);
-        this.add(turnButton7);
-        this.add(turnButton8);
         this.add(boardLabel);
         this.setTitle("Pentago");
         this.setSize(800, 800);
