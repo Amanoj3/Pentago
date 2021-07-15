@@ -26,9 +26,5 @@ public class turnButton extends JButton implements Logic{
             this.setText(">>");
         }
 
-        this.addActionListener(e->{
-           System.out.println("You pressed the " + direction + " button on quadrant " + quadrant);
-        });
-
     }
 }

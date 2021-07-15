@@ -25,6 +25,10 @@ public class GameFrame extends JFrame implements Logic {
         directionInfo = new String[]{"left","right","left","right","left","right","left","right"};
         xBoundInfo = new int[]{185,245,485,545,185,245,485,545};
         yBoundInfo = new int[]{352,352,352,352,652,652,652,652};
+        boardButton[][] quadrant1 = new boardButton[3][3];
+        boardButton[][] quadrant2 = new boardButton[3][3];
+        boardButton[][] quadrant3 = new boardButton[3][3];
+        boardButton[][] quadrant4 = new boardButton[3][3];
         chipMode = true;
         whoseTurn = "white";
         moveCounter = 0;
@@ -40,6 +44,10 @@ public class GameFrame extends JFrame implements Logic {
         for (int i = 0; i < 8; i++) {
             turnButton currentTurnButton = new turnButton(quadrantInfo[i],directionInfo[i]);
             currentTurnButton.setBounds(xBoundInfo[i],yBoundInfo[i],60,20);
+            currentTurnButton.addActionListener(e->{
+                System.out.println("You pressed the " +
+                        currentTurnButton.getDirection() + " button on quadrant " + currentTurnButton.getQuadrant());
+            });
             this.add(currentTurnButton);
         }
 
