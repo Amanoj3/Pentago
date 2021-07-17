@@ -25,10 +25,10 @@ public class GameFrame extends JFrame implements Logic {
         directionInfo = new String[]{"left","right","left","right","left","right","left","right"};
         xBoundInfo = new int[]{185,245,485,545,185,245,485,545};
         yBoundInfo = new int[]{352,352,352,352,652,652,652,652};
-        boardButton[][] quadrant1 = new boardButton[3][3];
-        boardButton[][] quadrant2 = new boardButton[3][3];
-        boardButton[][] quadrant3 = new boardButton[3][3];
-        boardButton[][] quadrant4 = new boardButton[3][3];
+        boardButton[][] quadrant1; // these reference variables for the quadrants
+        boardButton[][] quadrant2; // are supposed to make it easy to
+        boardButton[][] quadrant3; // rotate quadrants when a player has to
+        boardButton[][] quadrant4; // do so after placing a chip in a slot
         chipMode = true;
         whoseTurn = "white";
         moveCounter = 0;
@@ -51,24 +51,31 @@ public class GameFrame extends JFrame implements Logic {
             this.add(currentTurnButton);
         }
 
-        int currentY = 600;
-
+        int currentX = 120;
         for (int x = 0; x < width; x++) {
-            int currentX = 120;
+            int currentY = 600;
             for (int y = 0; y < height; y++) {
                 boardButton currentButton = new boardButton(x,y);
-                slots[x][y] = currentButton;
                 currentButton.setBounds(currentX,currentY,50,50);
-                currentX = currentX + 100;
+                currentY = currentY - 100;
                 currentButton.addActionListener(e->{
                     setChip(whoseTurn, currentButton);
                     moveCounter++;
                     setWhoseTurn();
                 });
+                slots[x][y] = currentButton;
                 this.add(currentButton);
             }
-                currentY = currentY - 100;
+                currentX = currentX + 100;
         }
+
+        quadrant1 = obtainQuadrant(slots,0,3,2,5);
+        quadrant2 = obtainQuadrant(slots,3,3,5,5);
+        quadrant3 = obtainQuadrant(slots,0,0,2,2);
+        quadrant4 = obtainQuadrant(slots,3,0,5,2);
+
+        //printQuadrant(quadrant1);
+
         this.add(boardLabel);
         this.setTitle("Pentago");
         this.setSize(800, 800);
