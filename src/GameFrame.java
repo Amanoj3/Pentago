@@ -2,14 +2,9 @@ import buttonFiles.*;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.Arrays;
 
 public class GameFrame extends JFrame implements Logic {
-    private int[] quadrantInfo;
-    private String[] directionInfo;
-    private int[] xBoundInfo;
-    private int[] yBoundInfo;
-    private turnButton[] turnButtons;
+    private final turnButton[] turnButtons;
     private int moveCounter;
     private String whoseTurn;
     boolean chipMode; // disable slots when a player has to turn a quadrant
@@ -23,10 +18,10 @@ public class GameFrame extends JFrame implements Logic {
     }
 
     GameFrame() {
-        quadrantInfo = new int[]{1, 1, 2, 2, 3, 3, 4, 4};
-        directionInfo = new String[]{"left","right","left","right","left","right","left","right"};
-        xBoundInfo = new int[]{185,245,485,545,185,245,485,545};
-        yBoundInfo = new int[]{352,352,352,352,652,652,652,652};
+        int[] quadrantInfo = new int[]{1, 1, 2, 2, 3, 3, 4, 4};
+        String[] directionInfo = new String[]{"left", "right", "left", "right", "left", "right", "left", "right"};
+        int[] xBoundInfo = new int[]{185, 245, 485, 545, 185, 245, 485, 545};
+        int[] yBoundInfo = new int[]{352, 352, 352, 352, 652, 652, 652, 652};
         boardButton[][] quadrant1; // these reference variables for the quadrants
         boardButton[][] quadrant2; // are supposed to make it easy to
         boardButton[][] quadrant3; // rotate quadrants when a player has to
@@ -72,8 +67,8 @@ public class GameFrame extends JFrame implements Logic {
 
         // initialize all the turnButtons for each quadrant and add them to the frame
         for (int i = 0; i < 8; i++) {
-            turnButton currentTurnButton = new turnButton(quadrantInfo[i],directionInfo[i]);
-            currentTurnButton.setBounds(xBoundInfo[i],yBoundInfo[i],60,20);
+            turnButton currentTurnButton = new turnButton(quadrantInfo[i], directionInfo[i]);
+            currentTurnButton.setBounds(xBoundInfo[i], yBoundInfo[i],60,20);
             currentTurnButton.addActionListener(e->{
                 System.out.println("You pressed the " +
                         currentTurnButton.getDirection() + " button on quadrant " + currentTurnButton.getQuadrant());
