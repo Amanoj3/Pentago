@@ -4,8 +4,8 @@ import javax.swing.*;
 
 public class turnButton extends JButton implements Logic{
 
-    private int quadrant;
-    private String direction;
+    private final int quadrant;
+    private final String direction;
 
     public String getDirection() {
         return direction;

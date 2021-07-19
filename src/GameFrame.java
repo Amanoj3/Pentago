@@ -1,6 +1,7 @@
 import buttonFiles.*;
 
 import javax.swing.*;
+import java.util.Arrays;
 
 public class GameFrame extends JFrame implements Logic {
     private int[] quadrantInfo;
@@ -40,16 +41,6 @@ public class GameFrame extends JFrame implements Logic {
 
         //the slots where players can put their respective pieces
         boardButton[][] slots = new boardButton[width][height];
-        // initialize all the turnButtons for each quadrant and add them to the frame
-        for (int i = 0; i < 8; i++) {
-            turnButton currentTurnButton = new turnButton(quadrantInfo[i],directionInfo[i]);
-            currentTurnButton.setBounds(xBoundInfo[i],yBoundInfo[i],60,20);
-            currentTurnButton.addActionListener(e->{
-                System.out.println("You pressed the " +
-                        currentTurnButton.getDirection() + " button on quadrant " + currentTurnButton.getQuadrant());
-            });
-            this.add(currentTurnButton);
-        }
 
         int currentX = 120;
         for (int x = 0; x < width; x++) {
@@ -73,8 +64,33 @@ public class GameFrame extends JFrame implements Logic {
         quadrant2 = obtainQuadrant(slots,3,3,5,5);
         quadrant3 = obtainQuadrant(slots,0,0,2,2);
         quadrant4 = obtainQuadrant(slots,3,0,5,2);
-
+        //System.out.println(quadrant1[0][0].getxCoordinate() + "," + quadrant1[0][0].getyCoordinate());
         //printQuadrant(quadrant1);
+
+        // initialize all the turnButtons for each quadrant and add them to the frame
+        for (int i = 0; i < 8; i++) {
+            turnButton currentTurnButton = new turnButton(quadrantInfo[i],directionInfo[i]);
+            currentTurnButton.setBounds(xBoundInfo[i],yBoundInfo[i],60,20);
+            currentTurnButton.addActionListener(e->{
+                System.out.println("You pressed the " +
+                        currentTurnButton.getDirection() + " button on quadrant " + currentTurnButton.getQuadrant());
+                if (currentTurnButton.getQuadrant() == 1) {
+                    rotateQuadrant(currentTurnButton.getDirection(), quadrant1);
+                }
+                else if (currentTurnButton.getQuadrant() == 2) {
+                    rotateQuadrant(currentTurnButton.getDirection(), quadrant2);
+                }
+                else if (currentTurnButton.getQuadrant() == 3) {
+                    rotateQuadrant(currentTurnButton.getDirection(), quadrant3);
+                }
+                else {
+                    rotateQuadrant(currentTurnButton.getDirection(), quadrant4);
+                }
+                disable_filled_slots(slots);
+            });
+            this.add(currentTurnButton);
+        }
+
 
         this.add(boardLabel);
         this.setTitle("Pentago");

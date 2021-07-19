@@ -5,11 +5,12 @@ import javax.swing.*;
 public class boardButton extends JButton implements Logic {
     private final int xCoordinate;
     private final int yCoordinate;
-    private Icon emptySlot;
-    private Icon graySlot;
-    private Icon gray_Highlighted;
-    private Icon whiteSlot;
-    private Icon white_Highlighted;
+    private final Icon graySlot;
+    private final Icon gray_Highlighted;
+    private final Icon whiteSlot;
+    private final Icon white_Highlighted;
+    private final Icon emptySlot;
+    private String currentIcon;
 
     public int getxCoordinate() {
         return xCoordinate;
@@ -19,20 +20,33 @@ public class boardButton extends JButton implements Logic {
         return yCoordinate;
     }
 
+    public String getCurrentIcon() {
+        return currentIcon;
+    }
+
     public void setGraySlot() {
+        currentIcon = "gray";
         this.setIcon(graySlot);
     }
 
     public void setGray_Highlighted() {
+        currentIcon = "grayHighlighted";
         this.setIcon(gray_Highlighted);
     }
 
     public void setWhiteSlot() {
+        currentIcon = "white";
         this.setIcon(whiteSlot);
     }
 
     public void setWhite_Highlighted() {
+        currentIcon = "whiteHighlighted";
         this.setIcon(white_Highlighted);
+    }
+
+    public void setEmpty() {
+        currentIcon = "empty";
+        this.setIcon(emptySlot);
     }
 
     public boardButton(int x, int y) {
@@ -44,6 +58,7 @@ public class boardButton extends JButton implements Logic {
         whiteSlot = new ImageIcon("src/graphics/whiteSlot.png");
         white_Highlighted = new ImageIcon("src/graphics/whiteSlotHighlighted.png");
         this.setIcon(emptySlot);
+        currentIcon = "empty";
     }
 
 }
