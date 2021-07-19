@@ -12,13 +12,13 @@ public interface Logic {
         }
     }
 
-    default void printQuadrant(boardButton[][] quad) { // for debugging purposes
+    /*default void printQuadrant(boardButton[][] quad) { // for debugging purposes
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
                 System.out.println(quad[i][j]);
             }
         }
-    }
+    }*/
 
     default boardButton[][] obtainQuadrant(boardButton[][] slots, int startX, int startY, int lastX, int lastY) {
         boardButton[][] quadrantToReturn = new boardButton[3][3];
