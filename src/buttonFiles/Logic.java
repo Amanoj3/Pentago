@@ -50,7 +50,7 @@ public interface Logic {
             }
         }
         // make a changeSource array
-        if (direction.equals("right")) {
+        if (direction.equals("left")) {
             boardButton[] changeSources = {quadrantClone[0][2], quadrantClone[1][2], quadrantClone[2][2], quadrantClone[0][1],
                     quadrantClone[2][1], quadrantClone[0][0], quadrantClone[1][0], quadrantClone[2][0]};
 
@@ -76,6 +76,7 @@ public interface Logic {
         for (int i = 0; i < 6; i++) {
             for (int j = 0; j < 6; j++) {
                 slots[i][j].setEnabled(flag);
+                slots[i][j].setDisabledIcon(slots[i][j].getIcon());
             }
         }
     }

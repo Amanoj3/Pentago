@@ -1,6 +1,7 @@
 import buttonFiles.*;
 
 import javax.swing.*;
+import java.awt.*;
 import java.util.Arrays;
 
 public class GameFrame extends JFrame implements Logic {
@@ -53,6 +54,8 @@ public class GameFrame extends JFrame implements Logic {
                     setChip(whoseTurn, currentButton);
                     moveCounter++;
                     setWhoseTurn();
+                    disable_or_enable_turns(turnButtons,true);
+                    disable_or_enable_slots(slots,false);
                 });
                 slots[x][y] = currentButton;
                 this.add(currentButton);
@@ -87,11 +90,13 @@ public class GameFrame extends JFrame implements Logic {
                     rotateQuadrant(currentTurnButton.getDirection(), quadrant4);
                 }
                 disable_filled_slots(slots);
+                disable_or_enable_turns(turnButtons,false);
+                disable_or_enable_slots(slots,true);
             });
+            turnButtons[i] = currentTurnButton;
             this.add(currentTurnButton);
         }
-
-
+        disable_or_enable_turns(turnButtons,false);
         this.add(boardLabel);
         this.setTitle("Pentago");
         this.setSize(800, 800);
@@ -99,6 +104,7 @@ public class GameFrame extends JFrame implements Logic {
         this.setVisible(true);
         this.setResizable(false);
         this.setLayout(null);
+        this.getContentPane().setBackground(Color.decode("#cff595"));
 
     }
 
