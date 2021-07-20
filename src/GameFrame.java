@@ -47,10 +47,16 @@ public class GameFrame extends JFrame implements Logic {
                 currentY = currentY - 100;
                 currentButton.addActionListener(e->{
                     setChip(whoseTurn, currentButton);
+                    disable_filled_slots(slots);
                     moveCounter++;
-                    setWhoseTurn();
-                    disable_or_enable_turns(turnButtons,true);
-                    disable_or_enable_slots(slots,false);
+                    if (winningSequenceFound(slots,whoseTurn)) {
+                        disable_or_enable_slots(slots,false);
+                        disable_or_enable_turns(turnButtons, false);
+                    }
+                    else {
+                        disable_or_enable_turns(turnButtons, true);
+                        disable_or_enable_slots(slots, false);
+                    }
                 });
                 slots[x][y] = currentButton;
                 this.add(currentButton);
@@ -84,9 +90,16 @@ public class GameFrame extends JFrame implements Logic {
                 else {
                     rotateQuadrant(currentTurnButton.getDirection(), quadrant4);
                 }
-                disable_filled_slots(slots);
-                disable_or_enable_turns(turnButtons,false);
-                disable_or_enable_slots(slots,true);
+                if (winningSequenceFound(slots,whoseTurn)) {
+                    disable_or_enable_slots(slots,false);
+                    disable_or_enable_turns(turnButtons, false);
+                }
+                else {
+                    setWhoseTurn();
+                    disable_or_enable_turns(turnButtons, false);
+                    disable_or_enable_slots(slots, true);
+                    disable_filled_slots(slots);
+                }
             });
             turnButtons[i] = currentTurnButton;
             this.add(currentTurnButton);
