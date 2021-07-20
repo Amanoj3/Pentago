@@ -1,6 +1,7 @@
 package buttonFiles;
 
 public interface Logic { // as of 7/19/2021 7:37 PM: Work on the winning combinations (including the highlighted pieces part)
+    // as of 7/20/21 12:29 PM - fix winningSequence method
 
     default void correspondingHighlight(boardButton btn, String whoseTurn) {
         if (whoseTurn.equals("white")) {
@@ -12,74 +13,78 @@ public interface Logic { // as of 7/19/2021 7:37 PM: Work on the winning combina
     }
 
     default boolean winningSequenceFound(boardButton[][] slots, String whoseTurn) {
-        boolean found = false;
-        try {
-            for (int x = 0; x < 6; x++) {
-                for (int y = 0; y < 6; y++) {
-                    // ascending diagonal check
-                    if ((slots[x][y].getCurrentIcon().equals(whoseTurn)
-                            && slots[x+1][y+1].getCurrentIcon().equals(whoseTurn) &&
-                            slots[x+2][y+2].getCurrentIcon().equals(whoseTurn)
-                            && slots[x+3][y+3].getCurrentIcon().equals(whoseTurn)
-                            && slots[x+4][y+4].getCurrentIcon().equals(whoseTurn))) {
-                        correspondingHighlight(slots[x][y],whoseTurn);
-                        correspondingHighlight(slots[x+1][y+1],whoseTurn);
-                        correspondingHighlight(slots[x+2][y+2],whoseTurn);
-                        correspondingHighlight(slots[x+3][y+3],whoseTurn);
-                        correspondingHighlight(slots[x+4][y+4],whoseTurn);
-                        found = true;
-                        break;
-                    }
-                    //descending diagonal check
-                    if (slots[x][y].getCurrentIcon().equals(whoseTurn)
-                            && slots[x+1][y-1].getCurrentIcon().equals(whoseTurn)
-                            && slots[x+2][y-2].getCurrentIcon().equals(whoseTurn)
-                            && slots[x+3][y-3].getCurrentIcon().equals(whoseTurn)
-                            && slots[x+4][y-4].getCurrentIcon().equals(whoseTurn)
-                    ) {
-                        correspondingHighlight(slots[x][y],whoseTurn);
-                        correspondingHighlight(slots[x+1][y-1],whoseTurn);
-                        correspondingHighlight(slots[x+2][y-2],whoseTurn);
-                        correspondingHighlight(slots[x+3][y-3],whoseTurn);
-                        correspondingHighlight(slots[x+4][y-4],whoseTurn);
-                        found = true;
-                        break;
-                    }
-                    //vertical check
-                    if (slots[x][y].getCurrentIcon().equals(whoseTurn)
-                    && slots[x][y+1].getCurrentIcon().equals(whoseTurn)
-                    && slots[x][y+2].getCurrentIcon().equals(whoseTurn)
-                    && slots[x][y+3].getCurrentIcon().equals(whoseTurn)
-                    && slots[x][y+4].getCurrentIcon().equals(whoseTurn)) {
-                        correspondingHighlight(slots[x][y],whoseTurn);
-                        correspondingHighlight(slots[x][y+1],whoseTurn);
-                        correspondingHighlight(slots[x][y+2],whoseTurn);
-                        correspondingHighlight(slots[x][y+3],whoseTurn);
-                        correspondingHighlight(slots[x][y+4],whoseTurn);
-                        found = true;
-                        break;
-
-                    }
-                    //horizontal check
-                    if (slots[x][y].getCurrentIcon().equals(whoseTurn)
-                    && slots[x+1][y].getCurrentIcon().equals(whoseTurn)
-                    && slots[x+2][y].getCurrentIcon().equals(whoseTurn)
-                    && slots[x+3][y].getCurrentIcon().equals(whoseTurn)
-                    && slots[x+4][y].getCurrentIcon().equals(whoseTurn)) {
-                        correspondingHighlight(slots[x][y],whoseTurn);
-                        correspondingHighlight(slots[x+1][y],whoseTurn);
-                        correspondingHighlight(slots[x+2][y],whoseTurn);
-                        correspondingHighlight(slots[x+3][y],whoseTurn);
-                        correspondingHighlight(slots[x+4][y],whoseTurn);
-                        found = true;
-                        break;
-                    }
+        //horizontal checks
+        for (int x = 0; x < 2; x++) {
+            for (int y = 0; y < 6; y++) {
+                if (slots[x][y].getCurrentIcon().equals(whoseTurn) &&
+                        slots[x+1][y].getCurrentIcon().equals(whoseTurn)
+                && slots[x+2][y].getCurrentIcon().equals(whoseTurn)
+                && slots[x+3][y].getCurrentIcon().equals(whoseTurn)
+                && slots[x+4][y].getCurrentIcon().equals(whoseTurn)) {
+                    correspondingHighlight(slots[x][y],whoseTurn);
+                    correspondingHighlight(slots[x+1][y],whoseTurn);
+                    correspondingHighlight(slots[x+2][y],whoseTurn);
+                    correspondingHighlight(slots[x+3][y],whoseTurn);
+                    correspondingHighlight(slots[x+4][y],whoseTurn);
+                    return true;
                 }
             }
-        } catch(Exception e){
-            System.out.println("Exception caught gracefully!");
         }
-        return found;
+        // vertical checks
+        for (int x = 0; x < 6; x++) {
+            for (int y = 0; y < 2; y++) {
+                if (slots[x][y].getCurrentIcon().equals(whoseTurn)
+                        && slots[x][y+1].getCurrentIcon().equals(whoseTurn)
+                        && slots[x][y+2].getCurrentIcon().equals(whoseTurn)
+                        && slots[x][y+3].getCurrentIcon().equals(whoseTurn)
+                        && slots[x][y+4].getCurrentIcon().equals(whoseTurn)) {
+                    correspondingHighlight(slots[x][y], whoseTurn);
+                    correspondingHighlight(slots[x][y + 1], whoseTurn);
+                    correspondingHighlight(slots[x][y + 2], whoseTurn);
+                    correspondingHighlight(slots[x][y + 3], whoseTurn);
+                    correspondingHighlight(slots[x][y + 4], whoseTurn);
+                    return true;
+                }
+            }
+        }
+
+        //ascending diagonal checks
+        for (int x = 0; x < 2; x++) {
+            for (int y = 0; y < 2; y++) {
+                if ((slots[x][y].getCurrentIcon().equals(whoseTurn)
+                        && slots[x+1][y+1].getCurrentIcon().equals(whoseTurn) &&
+                        slots[x+2][y+2].getCurrentIcon().equals(whoseTurn)
+                        && slots[x+3][y+3].getCurrentIcon().equals(whoseTurn)
+                        && slots[x+4][y+4].getCurrentIcon().equals(whoseTurn))) {
+                    correspondingHighlight(slots[x][y],whoseTurn);
+                    correspondingHighlight(slots[x+1][y+1],whoseTurn);
+                    correspondingHighlight(slots[x+2][y+2],whoseTurn);
+                    correspondingHighlight(slots[x+3][y+3],whoseTurn);
+                    correspondingHighlight(slots[x+4][y+4],whoseTurn);
+                    return true;
+                }
+            }
+        }
+        //descending diagonal check
+        for (int x = 0; x < 2; x++) {
+            for (int y = 5; y >= 4; y--) {
+                if (slots[x][y].getCurrentIcon().equals(whoseTurn)
+                        && slots[x+1][y-1].getCurrentIcon().equals(whoseTurn)
+                        && slots[x+2][y-2].getCurrentIcon().equals(whoseTurn)
+                        && slots[x+3][y-3].getCurrentIcon().equals(whoseTurn)
+                        && slots[x+4][y-4].getCurrentIcon().equals(whoseTurn)
+                ) {
+                    correspondingHighlight(slots[x][y],whoseTurn);
+                    correspondingHighlight(slots[x+1][y-1],whoseTurn);
+                    correspondingHighlight(slots[x+2][y-2],whoseTurn);
+                    correspondingHighlight(slots[x+3][y-3],whoseTurn);
+                    correspondingHighlight(slots[x+4][y-4],whoseTurn);
+                    return true;
+                }
+            }
+        }
+
+        return false; // winning sequence not found
     }
 
     default void changeIcon(boardButton buttonToChange, boardButton changeSource) {
