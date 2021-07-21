@@ -1,7 +1,14 @@
 package buttonFiles;
 
-public interface Logic { // as of 7/19/2021 7:37 PM: Work on the winning combinations (including the highlighted pieces part)
-    // as of 7/20/21 12:29 PM - fix winningSequence method
+public interface Logic { //As of 7/20/21 2:32 pm - continue testing the game
+
+    default void resetSlots(boardButton[][] slots) {
+        for (int i = 0; i<6; i++) {
+            for (int j = 0; j<6; j++) {
+                slots[i][j].setEmpty();
+            }
+        }
+    }
 
     default void correspondingHighlight(boardButton btn, String whoseTurn) {
         if (whoseTurn.equals("white")) {

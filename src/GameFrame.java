@@ -7,7 +7,7 @@ public class GameFrame extends JFrame implements Logic {
     private final turnButton[] turnButtons;
     private int moveCounter;
     private String whoseTurn;
-    boolean chipMode; // disable slots when a player has to turn a quadrant
+    private boardButton[][] slots;
     public void setWhoseTurn() {
         if (moveCounter % 2 == 0) {
             whoseTurn = "white";
@@ -15,6 +15,14 @@ public class GameFrame extends JFrame implements Logic {
         else {
             whoseTurn = "gray";
         }
+    }
+
+    public void resetGame() {
+        resetSlots(slots);
+        whoseTurn = "white";
+        moveCounter = 0;
+        disable_or_enable_slots(slots,true);
+        disable_or_enable_turns(turnButtons,false);
     }
 
     GameFrame() {
@@ -26,7 +34,6 @@ public class GameFrame extends JFrame implements Logic {
         boardButton[][] quadrant2; // are supposed to make it easy to
         boardButton[][] quadrant3; // rotate quadrants when a player has to
         boardButton[][] quadrant4; // do so after placing a chip in a slot
-        chipMode = true;
         whoseTurn = "white";
         moveCounter = 0;
         int width = 6;
@@ -35,8 +42,15 @@ public class GameFrame extends JFrame implements Logic {
         ImageIcon boardImage = new ImageIcon("src/graphics/pentagoBoard.png");
         JLabel boardLabel = new JLabel(boardImage);
 
+        JButton resetButton = new JButton("Reset");
+        resetButton.setBounds(10,20,75,30);
+        resetButton.addActionListener(e->{
+            resetGame();
+        });
+        this.add(resetButton);
+
         //the slots where players can put their respective pieces
-        boardButton[][] slots = new boardButton[width][height];
+        slots = new boardButton[width][height];
 
         int currentX = 120;
         for (int x = 0; x < width; x++) {
@@ -68,8 +82,6 @@ public class GameFrame extends JFrame implements Logic {
         quadrant2 = obtainQuadrant(slots,3,3,5,5);
         quadrant3 = obtainQuadrant(slots,0,0,2,2);
         quadrant4 = obtainQuadrant(slots,3,0,5,2);
-        //System.out.println(quadrant1[0][0].getxCoordinate() + "," + quadrant1[0][0].getyCoordinate());
-        //printQuadrant(quadrant1);
 
         // initialize all the turnButtons for each quadrant and add them to the frame
         for (int i = 0; i < 8; i++) {
