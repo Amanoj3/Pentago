@@ -7,7 +7,16 @@ public class GameFrame extends JFrame implements Logic {
     private final turnButton[] turnButtons;
     private int moveCounter;
     private String whoseTurn;
-    private boardButton[][] slots;
+    private final boardButton[][] slots;
+    private final JLabel turnLabel; // indicates whose turn it is
+    private void setTurnLabel() {
+        if (whoseTurn.equals("white")) {
+            turnLabel.setText("White's turn!");
+        }
+        else {
+            turnLabel.setText("Gray's turn!");
+        }
+    }
     public void setWhoseTurn() {
         if (moveCounter % 2 == 0) {
             whoseTurn = "white";
@@ -23,6 +32,7 @@ public class GameFrame extends JFrame implements Logic {
         moveCounter = 0;
         disable_or_enable_slots(slots,true);
         disable_or_enable_turns(turnButtons,false);
+        setTurnLabel();
     }
 
     GameFrame() {
@@ -35,6 +45,10 @@ public class GameFrame extends JFrame implements Logic {
         boardButton[][] quadrant3; // rotate quadrants when a player has to
         boardButton[][] quadrant4; // do so after placing a chip in a slot
         whoseTurn = "white";
+        // the JLabel that indicates whose turn it is
+        turnLabel = new JLabel("White's turn!");
+        turnLabel.setBounds(350,20,75,30);
+        this.add(turnLabel);
         moveCounter = 0;
         int width = 6;
         int height = 6;
@@ -44,9 +58,7 @@ public class GameFrame extends JFrame implements Logic {
 
         JButton resetButton = new JButton("Reset");
         resetButton.setBounds(10,20,75,30);
-        resetButton.addActionListener(e->{
-            resetGame();
-        });
+        resetButton.addActionListener(e-> resetGame());
         this.add(resetButton);
 
         //the slots where players can put their respective pieces
@@ -63,7 +75,8 @@ public class GameFrame extends JFrame implements Logic {
                     setChip(whoseTurn, currentButton);
                     disable_filled_slots(slots);
                     moveCounter++;
-                    if (winningSequenceFound(slots,whoseTurn)) {
+                    if (winningSequenceFound(slots,"white") || (winningSequenceFound(slots,"gray"))) {
+                        turnLabel.setText("Game over!");
                         disable_or_enable_slots(slots,false);
                         disable_or_enable_turns(turnButtons, false);
                     }
@@ -102,12 +115,14 @@ public class GameFrame extends JFrame implements Logic {
                 else {
                     rotateQuadrant(currentTurnButton.getDirection(), quadrant4);
                 }
-                if (winningSequenceFound(slots,whoseTurn)) {
+                if (winningSequenceFound(slots,"white") || (winningSequenceFound(slots,"gray"))) {
+                    turnLabel.setText("Game over!");
                     disable_or_enable_slots(slots,false);
                     disable_or_enable_turns(turnButtons, false);
                 }
                 else {
                     setWhoseTurn();
+                    setTurnLabel();
                     disable_or_enable_turns(turnButtons, false);
                     disable_or_enable_slots(slots, true);
                     disable_filled_slots(slots);
