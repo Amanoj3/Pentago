@@ -9,6 +9,24 @@ public class GameFrame extends JFrame implements Logic {
     private String whoseTurn; // a string that changes based on the evenness/oddness of the moveCounter variable
     private final boardButton[][] slots; // buttons/slots that a player can place a chip in
     private final JLabel turnLabel; // indicates whose turn it is within the JFrame
+
+    public boardButton[][] getSlots() {
+        return slots;
+    }
+
+    public turnButton[] getTurnButtons() {
+        return turnButtons;
+    }
+
+    public JLabel getTurnLabel() {
+        return turnLabel;
+    }
+    public int getMoveCounter() {
+        return moveCounter;
+    }
+    public String getWhoseTurn() {
+        return whoseTurn;
+    }
     private void setTurnLabel() { // this method changes the JLabel based on whose turn it is
         if (whoseTurn.equals("white")) {
             turnLabel.setText("White's turn!");
