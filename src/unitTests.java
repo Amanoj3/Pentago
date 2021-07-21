@@ -20,4 +20,20 @@ public class unitTests {
         assertEquals("There should be 36 buttons", 36, buttonCounter);
     }
 
+    @Test
+    public void resetTest1() {
+        example.resetGame();
+        initialConditionsTest();
+    }
+
+    @Test
+    public void gameplayTest1() {
+        example.getSlots()[0][0].doClick();
+        assertEquals("white",example.getWhoseTurn());
+        assertEquals("White's turn!",example.getTurnLabel().getText());
+        example.getTurnButtons()[0].doClick();
+        assertEquals("gray",example.getWhoseTurn());
+        assertEquals("Gray's turn!",example.getTurnLabel().getText());
+    }
+
 }
