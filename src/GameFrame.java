@@ -4,12 +4,12 @@ import javax.swing.*;
 import java.awt.*;
 
 public class GameFrame extends JFrame implements Logic {
-    private final turnButton[] turnButtons;
-    private int moveCounter;
-    private String whoseTurn;
-    private final boardButton[][] slots;
-    private final JLabel turnLabel; // indicates whose turn it is
-    private void setTurnLabel() {
+    private final turnButton[] turnButtons; // these buttons enable you to turn a quadrant
+    private int moveCounter; // this int value dictates whose turn it is
+    private String whoseTurn; // a string that changes based on the evenness/oddness of the moveCounter variable
+    private final boardButton[][] slots; // buttons/slots that a player can place a chip in
+    private final JLabel turnLabel; // indicates whose turn it is within the JFrame
+    private void setTurnLabel() { // this method changes the JLabel based on whose turn it is
         if (whoseTurn.equals("white")) {
             turnLabel.setText("White's turn!");
         }
@@ -17,7 +17,7 @@ public class GameFrame extends JFrame implements Logic {
             turnLabel.setText("Gray's turn!");
         }
     }
-    public void setWhoseTurn() {
+    public void setWhoseTurn() { //setter function for the whoseTurn field member
         if (moveCounter % 2 == 0) {
             whoseTurn = "white";
         }
@@ -26,7 +26,7 @@ public class GameFrame extends JFrame implements Logic {
         }
     }
 
-    public void resetGame() {
+    public void resetGame() { // click the reset button to start over..
         resetSlots(slots);
         whoseTurn = "white";
         moveCounter = 0;
@@ -40,20 +40,21 @@ public class GameFrame extends JFrame implements Logic {
         String[] directionInfo = new String[]{"left", "right", "left", "right", "left", "right", "left", "right"};
         int[] xBoundInfo = new int[]{185, 245, 485, 545, 185, 245, 485, 545};
         int[] yBoundInfo = new int[]{352, 352, 352, 352, 652, 652, 652, 652};
+        // the variables above contain information (where they're located, their directions, etc) for the turnButtons
         boardButton[][] quadrant1; // these reference variables for the quadrants
         boardButton[][] quadrant2; // are supposed to make it easy to
         boardButton[][] quadrant3; // rotate quadrants when a player has to
         boardButton[][] quadrant4; // do so after placing a chip in a slot
-        whoseTurn = "white";
+        whoseTurn = "white"; // white moves first
         // the JLabel that indicates whose turn it is
         turnLabel = new JLabel("White's turn!");
         turnLabel.setBounds(350,20,75,30);
         this.add(turnLabel);
-        moveCounter = 0;
-        int width = 6;
+        moveCounter = 0; // zero moves made at the very beginnning..
+        int width = 6; // it is a 6x6 board..
         int height = 6;
         turnButtons = new turnButton[8];
-        ImageIcon boardImage = new ImageIcon("src/graphics/pentagoBoard.png");
+        ImageIcon boardImage = new ImageIcon("src/graphics/pentagoBoard.png"); // background image behind the slots
         JLabel boardLabel = new JLabel(boardImage);
 
         JButton resetButton = new JButton("Reset");
@@ -132,6 +133,8 @@ public class GameFrame extends JFrame implements Logic {
             this.add(currentTurnButton);
         }
         disable_or_enable_turns(turnButtons,false);
+        Image frameLogo = new ImageIcon("src/graphics/pentagoLogo.png").getImage(); // logo for the window's frame
+        this.setIconImage(frameLogo);
         this.add(boardLabel);
         this.setTitle("Pentago");
         this.setSize(800, 800);

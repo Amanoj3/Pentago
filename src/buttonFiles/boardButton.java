@@ -2,11 +2,11 @@ package buttonFiles;
 
 import javax.swing.*;
 
-public class boardButton extends JButton implements Logic {
+public class boardButton extends JButton implements Logic { // there are 36 (6x6) boardButtons in a board
     private final int xCoordinate;
     private final int yCoordinate;
-    private final Icon graySlot;
-    private final Icon gray_Highlighted;
+    private final Icon graySlot; // a boardButton can have a white chip or a gray chip or it can be empty
+    private final Icon gray_Highlighted; // highlighted buttons help you see who the winner is
     private final Icon whiteSlot;
     private final Icon white_Highlighted;
     private final Icon emptySlot;

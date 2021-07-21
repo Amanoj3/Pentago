@@ -2,7 +2,7 @@ package buttonFiles;
 
 public interface Logic { //As of 7/20/21 2:32 pm - continue testing the game
 
-    default void resetSlots(boardButton[][] slots) {
+    default void resetSlots(boardButton[][] slots) { // makes all slots empty for a new game
         for (int i = 0; i<6; i++) {
             for (int j = 0; j<6; j++) {
                 slots[i][j].setEmpty();
@@ -10,7 +10,7 @@ public interface Logic { //As of 7/20/21 2:32 pm - continue testing the game
         }
     }
 
-    default void correspondingHighlight(boardButton btn, String whoseTurn) {
+    default void correspondingHighlight(boardButton btn, String whoseTurn) { // highlights pieces to help the program determine the winner
         if (whoseTurn.equals("white")) {
             btn.setWhite_Highlighted();
         }
@@ -20,6 +20,7 @@ public interface Logic { //As of 7/20/21 2:32 pm - continue testing the game
     }
 
     default boolean winningSequenceFound(boardButton[][] slots, String whoseTurn) {
+        //checks for winning combos horizontally, vertically and diagonally
         //horizontal checks
         for (int x = 0; x < 2; x++) {
             for (int y = 0; y < 6; y++) {
@@ -93,7 +94,7 @@ public interface Logic { //As of 7/20/21 2:32 pm - continue testing the game
 
         return false; // winning sequence not found
     }
-
+    // this method changes icons when a quadrant gets rotated
     default void changeIcon(boardButton buttonToChange, boardButton changeSource) {
         switch (changeSource.getCurrentIcon()) {
             case "gray" -> buttonToChange.setGraySlot();
@@ -103,21 +104,12 @@ public interface Logic { //As of 7/20/21 2:32 pm - continue testing the game
             case "grayHighlighted" -> buttonToChange.setGray_Highlighted();
         }
     }
-
-    /*default void printQuadrant(boardButton[][] quad) { // for debugging purposes
-        for (int i = 0; i < 3; i++) {
-            for (int j = 0; j < 3; j++) {
-                System.out.println(quad[i][j]);
-            }
-        }
-    }*/
-
+    // helps you obtain a portion (a quadrant) of the entire 6x6 board
     default boardButton[][] obtainQuadrant(boardButton[][] slots, int startX, int startY, int lastX, int lastY) {
         boardButton[][] quadrantToReturn = new boardButton[3][3];
         int qx = 0, qy = 0;
         for (int i = startX; i <= lastX; i++) {
             for (int j = startY; j <= lastY; j++) {
-                //System.out.println(slots[i][j].getxCoordinate() + "," + slots[i][j].getyCoordinate());
                 quadrantToReturn[qx][qy] = slots[i][j];
                 qy++;
             }
@@ -158,12 +150,13 @@ public interface Logic { //As of 7/20/21 2:32 pm - continue testing the game
             }
         }
     }
-
+    // disables turnButtons when it's time to place a chip
     default void disable_or_enable_turns(turnButton[] turnButtons, boolean flag) {
         for (int i = 0; i < 8; i++) {
             turnButtons[i].setEnabled(flag);
         }
     }
+    //disables slots when it's time to rotate a quadrant
     default void disable_or_enable_slots(boardButton[][] slots,boolean flag) {
         for (int i = 0; i < 6; i++) {
             for (int j = 0; j < 6; j++) {
@@ -172,6 +165,7 @@ public interface Logic { //As of 7/20/21 2:32 pm - continue testing the game
             }
         }
     }
+    //makes all the slots with chips (non-empty slots) disabled
     default void disable_filled_slots(boardButton[][] slots) {
         for (int i = 0; i < 6; i++) {
             for (int j = 0; j < 6; j++) {
@@ -180,9 +174,8 @@ public interface Logic { //As of 7/20/21 2:32 pm - continue testing the game
             }
         }
     }
-
+    // this method places a chip in a slot
     default void setChip(String playerTurn, boardButton clickedButton) {
-        //System.out.println("in setChip method..");
         System.out.println("you pressed the button on " + clickedButton.getxCoordinate() + "," + clickedButton.getyCoordinate());
         if (playerTurn.equals("white")) {
             clickedButton.setWhiteSlot();

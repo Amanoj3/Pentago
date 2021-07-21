@@ -2,7 +2,7 @@ package buttonFiles;
 
 import javax.swing.*;
 
-public class turnButton extends JButton implements Logic{
+public class turnButton extends JButton implements Logic{ // turnButtons allow you to rotate quadrants
 
     private final int quadrant;
     private final String direction;
