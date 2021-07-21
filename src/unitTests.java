@@ -21,7 +21,7 @@ public class unitTests {
     }
 
     @Test
-    public void resetTest1() {
+    public void resetTest() {
         example.resetGame();
         initialConditionsTest();
     }
@@ -34,6 +34,9 @@ public class unitTests {
         example.getTurnButtons()[0].doClick();
         assertEquals("gray",example.getWhoseTurn());
         assertEquals("Gray's turn!",example.getTurnLabel().getText());
+        resetTest();
     }
+
+
 
 }
