@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
-public interface Logic { //As of 7/20/21 2:32 pm - continue testing the game
+public interface Logic {
 
      default int numOccupiedSlots(boardButton[][] slots) {
         int counter = 0;
@@ -22,30 +22,43 @@ public interface Logic { //As of 7/20/21 2:32 pm - continue testing the game
     }
 
     default void invokeDatabase(String victor, boardButton[][] slots) { // invoke this method at the end of a game
-        ArrayList<String> queryStrings = new ArrayList<>();
-        StringBuilder alertBoxMessage = new StringBuilder();
+
+         ArrayList<String> queryStrings = new ArrayList<>(); // each string is a row from game_table
+        StringBuilder alertBoxMessage = new StringBuilder(); // StringBuilders are for large strings or multiple concatenations (like in a loop)
+        // see https://stackoverflow.com/questions/1825781/when-to-use-stringbuilder
         Connection con;
+
         try {
+
             //number of occupied slots
             int numChipsPlaced = numOccupiedSlots(slots);
+
             //date and time
             Date date = Calendar.getInstance().getTime();
             DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-            String stringifyDate = dateFormat.format(date).substring(0,10);
-            String stringifyTime = dateFormat.format(date).substring(11);
+            String stringifyDate = dateFormat.format(date).substring(0,10); // contains the date in a "yyyy-MM-dd" format
+            String stringifyTime = dateFormat.format(date).substring(11); // this substring contains the time in a "hh:mm:ss" format
 
             Class.forName("com.mysql.jdbc.Driver");
+            //try to establish a connection
             con = DriverManager.getConnection("jdbc:mysql://localhost/pentago_db?characterEncoding=latin1","root","password");
+            //the Statement variable facilitates the execution of MySQL queries
             Statement st = con.createStatement();
-            String truncateQuery = "truncate game_table"; // this query gets executed when there are 5 or more rows
-            //e.g "INSERT INTO InsertDemo " + "VALUES (1, 'John', 34)";
+
+            //necessary queries listed as strings
+            // the truncate query gets executed when there are 5 or more rows as we will see below
+            String truncateQuery = "truncate game_table";
+            //insert a row indicating details like the winner, the time, etc.
             String insertQuery = "insert into game_table(game_winner,slots_filled,game_date,game_time)" +
                     " values ('" + victor + "','" + numChipsPlaced +"','"+stringifyDate+"','"+stringifyTime+"')";
-            System.out.println("i am here");
-            st.executeUpdate(insertQuery);
-            System.out.println("i am here 2!");
+            // the selectQuery retrieves the ENTIRE table
             String selectQuery = "select * from game_table";
+
+            //add a row to the table
+            st.executeUpdate(insertQuery);
+            //this stores the results of the selectQuery, which will be extracted in the while loop below
             ResultSet result = st.executeQuery(selectQuery);
+
             while (result.next()) {
                 String currentString = "";
                 currentString += result.getInt("game_id"); // append id
@@ -57,8 +70,9 @@ public interface Logic { //As of 7/20/21 2:32 pm - continue testing the game
                 currentString += result.getString("game_date"); //append today's date
                 currentString += "        ";
                 currentString += result.getString("game_time"); // append the time at which the game is finished
-                queryStrings.add(currentString); // push the stringified into the queryStrings arraylist
+                queryStrings.add(currentString); // push the stringified row into the queryStrings arraylist so we can display them in the JOptionPane below
             }
+
             if (queryStrings.size() >= 5) { // this resets/truncates the scoreboard once it has 5 or more rows
                 st.execute(truncateQuery);
             }
@@ -70,6 +84,7 @@ public interface Logic { //As of 7/20/21 2:32 pm - continue testing the game
             JOptionPane.showMessageDialog(null, alertBoxMessage,"Database Info/Scoreboard", JOptionPane.INFORMATION_MESSAGE); // this box shows all the rows from the table
         }
 
+        // if an attempt to connect to a DB fails, we must handle unexpected interruptions gracefully
         catch(SQLException | ClassNotFoundException ex) {
             System.out.println("Exception handled gracefully.");
             System.out.println(ex.getMessage());
@@ -96,8 +111,8 @@ public interface Logic { //As of 7/20/21 2:32 pm - continue testing the game
     default boolean winningSequenceFound(boardButton[][] slots, String whoseTurn) {
         //checks for winning combos horizontally, vertically and diagonally
         //horizontal checks
-        for (int x = 0; x < 2; x++) {
-            for (int y = 0; y < 6; y++) {
+        for (int x = 0; x < 2; x++) { // I had to program this defensively by making sure that nothing went out of bounds
+            for (int y = 0; y < 6; y++) { //hence x < 2
                 if (slots[x][y].getCurrentIcon().equals(whoseTurn) &&
                         slots[x+1][y].getCurrentIcon().equals(whoseTurn)
                 && slots[x+2][y].getCurrentIcon().equals(whoseTurn)
@@ -114,7 +129,7 @@ public interface Logic { //As of 7/20/21 2:32 pm - continue testing the game
         }
         // vertical checks
         for (int x = 0; x < 6; x++) {
-            for (int y = 0; y < 2; y++) {
+            for (int y = 0; y < 2; y++) { // y < 2 to avoid going out of bounds..
                 if (slots[x][y].getCurrentIcon().equals(whoseTurn)
                         && slots[x][y+1].getCurrentIcon().equals(whoseTurn)
                         && slots[x][y+2].getCurrentIcon().equals(whoseTurn)
