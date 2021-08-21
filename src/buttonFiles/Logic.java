@@ -1,14 +1,77 @@
 package buttonFiles;
-
 import javax.swing.*;
+import java.sql.*;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 public interface Logic { //As of 7/20/21 2:32 pm - continue testing the game
 
-    default void invokeDatabase() { // invoke this method at the end of a game
-        JFrame newFrame = new JFrame("Database Information");
-        newFrame.setSize(400,400);
-        newFrame.setResizable(false);
-        newFrame.setVisible(true);
+     default int numOccupiedSlots(boardButton[][] slots) {
+        int counter = 0;
+        for (int i = 0; i < 6; i++) {
+            for (int j = 0; j < 6; j++) {
+                if (!slots[i][j].getCurrentIcon().equals("empty")) { // if the slot is occupied/not empty, then update the counter
+                    counter++;
+                }
+            }
+        }
+        return counter;
+    }
+
+    default void invokeDatabase(String victor, boardButton[][] slots) { // invoke this method at the end of a game
+        ArrayList<String> queryStrings = new ArrayList<>();
+        StringBuilder alertBoxMessage = new StringBuilder();
+        Connection con;
+        try {
+            //number of occupied slots
+            int numChipsPlaced = numOccupiedSlots(slots);
+            //date and time
+            Date date = Calendar.getInstance().getTime();
+            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+            String stringifyDate = dateFormat.format(date).substring(0,10);
+            String stringifyTime = dateFormat.format(date).substring(11);
+            System.out.println(stringifyDate);
+            System.out.println(stringifyTime);
+
+            Class.forName("com.mysql.jdbc.Driver");
+            con = DriverManager.getConnection("jdbc:mysql://localhost/pentago_db?characterEncoding=latin1","root","password");
+            Statement st = con.createStatement();
+            //e.g "INSERT INTO InsertDemo " + "VALUES (1, 'John', 34)";
+            String insertQuery = "insert into game_table(game_winner,slots_filled,game_date,game_time)" +
+                    " values ('" + victor + "','" + numChipsPlaced +"','"+stringifyDate+"','"+stringifyTime+"')";
+            System.out.println("i am here");
+            st.executeUpdate(insertQuery);
+            System.out.println("i am here 2!");
+            String selectQuery = "select * from game_table";
+            ResultSet result = st.executeQuery(selectQuery);
+            while (result.next()) {
+                String currentString = "";
+                currentString += result.getInt("game_id"); // append id
+                currentString += "        ";
+                currentString += result.getString("game_winner"); // append winner
+                currentString += "        ";
+                currentString += result.getString("slots_filled"); // append slots_filled
+                currentString += "        ";
+                currentString += result.getString("game_date"); //append today's date
+                currentString += "        ";
+                currentString += result.getString("game_time"); // append the time at which the game is finished
+                queryStrings.add(currentString); // push the stringified into the queryStrings arraylist
+            }
+            con.close();
+            alertBoxMessage.append("ID|WIN|SLOTS|DATE|TIME").append("\n");
+            for (String queryString : queryStrings) {
+                alertBoxMessage.append(queryString).append("\n"); // ensures there is a new line after each row
+            }
+            JOptionPane.showMessageDialog(null, alertBoxMessage); // this box shows all the rows from the table
+        }
+
+        catch(SQLException | ClassNotFoundException ex) {
+            System.out.println("Exception handled gracefully.");
+            System.out.println(ex.getMessage());
+        }
     }
 
     default void resetSlots(boardButton[][] slots) { // makes all slots empty for a new game

@@ -10,6 +10,7 @@ public class GameFrame extends JFrame implements Logic {
     private final boardButton[][] slots; // buttons/slots that a player can place a chip in
     private final JLabel turnLabel; // indicates whose turn it is within the JFrame
 
+
     public boardButton[][] getSlots() {
         return slots;
     }
@@ -99,7 +100,7 @@ public class GameFrame extends JFrame implements Logic {
                         turnLabel.setText("Game over!");
                         disable_or_enable_slots(slots,false);
                         disable_or_enable_turns(turnButtons, false);
-                        invokeDatabase();
+                        invokeDatabase(whoseTurn,slots);
                     }
                     else {
                         //enable the appropriate buttons
@@ -142,7 +143,7 @@ public class GameFrame extends JFrame implements Logic {
                     turnLabel.setText("Game over!");
                     disable_or_enable_slots(slots,false);
                     disable_or_enable_turns(turnButtons, false);
-                    invokeDatabase();
+                    invokeDatabase(whoseTurn,slots);
                 }
                 else {
                     //the game continues normally and it's the other player's turn
