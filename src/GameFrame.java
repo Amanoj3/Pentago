@@ -66,40 +66,42 @@ public class GameFrame extends JFrame implements Logic {
         whoseTurn = "white"; // white moves first
         // the JLabel that indicates whose turn it is
         turnLabel = new JLabel("White's turn!");
-        turnLabel.setBounds(350,20,75,30);
+        turnLabel.setBounds(350,20,75,30); // determines the physical location of the turnLabel
         this.add(turnLabel);
-        moveCounter = 0; // zero moves made at the very beginnning..
+        moveCounter = 0; // zero moves made at the very beginning..
         int width = 6; // it is a 6x6 board..
         int height = 6;
-        turnButtons = new turnButton[8];
+        turnButtons = new turnButton[8]; // there are two turnButtons per quadrant
         ImageIcon boardImage = new ImageIcon("src/graphics/pentagoBoard.png"); // background image behind the slots
         JLabel boardLabel = new JLabel(boardImage);
 
         JButton resetButton = new JButton("Reset");
-        resetButton.setBounds(10,20,75,30);
-        resetButton.addActionListener(e-> resetGame());
+        resetButton.setBounds(10,20,75,30); // where the reset button is located physically
+        resetButton.addActionListener(e-> resetGame()); // if you click the reset button, the actionListener will call the resetGame() method
         this.add(resetButton);
 
         //the slots where players can put their respective pieces
         slots = new boardButton[width][height];
 
-        int currentX = 120;
+        int currentX = 120; // currentX and currentY determine the physical locations of the slots
         for (int x = 0; x < width; x++) {
             int currentY = 600;
             for (int y = 0; y < height; y++) {
-                boardButton currentButton = new boardButton(x,y);
-                currentButton.setBounds(currentX,currentY,50,50);
+                boardButton currentButton = new boardButton(x,y); // we add each slot/button one by one..
+                currentButton.setBounds(currentX,currentY,50,50); // each slot is 50x50 size-wise
                 currentY = currentY - 100;
-                currentButton.addActionListener(e->{
-                    setChip(whoseTurn, currentButton);
-                    disable_filled_slots(slots);
+                currentButton.addActionListener(e->{ // action listener for EACH slot
+                    setChip(whoseTurn, currentButton); // place a chip based on whose turn it is
+                    disable_filled_slots(slots); // once you place a chip in a slot, it will no longer be clickable
                     moveCounter++;
                     if (winningSequenceFound(slots,"white") || (winningSequenceFound(slots,"gray"))) {
+                        // if a player wins, update the label to "Game over!" and disable ALL buttons
                         turnLabel.setText("Game over!");
                         disable_or_enable_slots(slots,false);
                         disable_or_enable_turns(turnButtons, false);
                     }
                     else {
+                        //enable the appropriate buttons
                         disable_or_enable_turns(turnButtons, true);
                         disable_or_enable_slots(slots, false);
                     }
@@ -122,24 +124,26 @@ public class GameFrame extends JFrame implements Logic {
             currentTurnButton.addActionListener(e->{
                 System.out.println("You pressed the " +
                         currentTurnButton.getDirection() + " button on quadrant " + currentTurnButton.getQuadrant());
-                if (currentTurnButton.getQuadrant() == 1) {
+                if (currentTurnButton.getQuadrant() == 1) { // if a turnButton from quadrant 1 is pressed..
                     rotateQuadrant(currentTurnButton.getDirection(), quadrant1);
                 }
-                else if (currentTurnButton.getQuadrant() == 2) {
+                else if (currentTurnButton.getQuadrant() == 2) { // else if a turnButton from quadrant 2 is pressed
                     rotateQuadrant(currentTurnButton.getDirection(), quadrant2);
                 }
-                else if (currentTurnButton.getQuadrant() == 3) {
+                else if (currentTurnButton.getQuadrant() == 3) { //else if a turnButton from quadrant 3 is pressed
                     rotateQuadrant(currentTurnButton.getDirection(), quadrant3);
                 }
-                else {
+                else { // otherwise it's a turnButton from quadrant 4..
                     rotateQuadrant(currentTurnButton.getDirection(), quadrant4);
                 }
                 if (winningSequenceFound(slots,"white") || (winningSequenceFound(slots,"gray"))) {
+                    //if a player wins, disable all the buttons and update the turnLabel
                     turnLabel.setText("Game over!");
                     disable_or_enable_slots(slots,false);
                     disable_or_enable_turns(turnButtons, false);
                 }
                 else {
+                    //the game continues normally and it's the other player's turn
                     setWhoseTurn();
                     setTurnLabel();
                     disable_or_enable_turns(turnButtons, false);
@@ -152,15 +156,15 @@ public class GameFrame extends JFrame implements Logic {
         }
         disable_or_enable_turns(turnButtons,false);
         Image frameLogo = new ImageIcon("src/graphics/pentagoLogo.png").getImage(); // logo for the window's frame
-        this.setIconImage(frameLogo);
-        this.add(boardLabel);
-        this.setTitle("Pentago");
-        this.setSize(800, 800);
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setVisible(true);
-        this.setResizable(false);
+        this.setIconImage(frameLogo); // set the icon of the program
+        this.add(boardLabel); // the image behind the slots a.k.a the board itself
+        this.setTitle("Pentago"); // title of the frame
+        this.setSize(800, 800); // 800x800 window
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // program ends when the frame is closed
+        this.setVisible(true); // visible window
+        this.setResizable(false); // cannot resize window
         this.setLayout(null);
-        this.getContentPane().setBackground(Color.decode("#cff595"));
+        this.getContentPane().setBackground(Color.decode("#cff595")); // background color
 
     }
 

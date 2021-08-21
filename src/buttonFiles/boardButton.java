@@ -14,7 +14,7 @@ public class boardButton extends JButton implements Logic { // there are 36 (6x6
 
     public int getxCoordinate() {
         return xCoordinate;
-    }
+    } // getters and setters below
 
     public int getyCoordinate() {
         return yCoordinate;
@@ -57,7 +57,7 @@ public class boardButton extends JButton implements Logic { // there are 36 (6x6
         gray_Highlighted = new ImageIcon("src/graphics/graySlotHighlighted.png");
         whiteSlot = new ImageIcon("src/graphics/whiteSlot.png");
         white_Highlighted = new ImageIcon("src/graphics/whiteSlotHighlighted.png");
-        this.setIcon(emptySlot);
+        this.setIcon(emptySlot); // initially, all slots are empty
         currentIcon = "empty";
     }
 
