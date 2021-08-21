@@ -99,6 +99,7 @@ public class GameFrame extends JFrame implements Logic {
                         turnLabel.setText("Game over!");
                         disable_or_enable_slots(slots,false);
                         disable_or_enable_turns(turnButtons, false);
+                        invokeDatabase();
                     }
                     else {
                         //enable the appropriate buttons
@@ -141,6 +142,7 @@ public class GameFrame extends JFrame implements Logic {
                     turnLabel.setText("Game over!");
                     disable_or_enable_slots(slots,false);
                     disable_or_enable_turns(turnButtons, false);
+                    invokeDatabase();
                 }
                 else {
                     //the game continues normally and it's the other player's turn

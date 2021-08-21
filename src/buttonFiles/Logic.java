@@ -1,6 +1,15 @@
 package buttonFiles;
 
+import javax.swing.*;
+
 public interface Logic { //As of 7/20/21 2:32 pm - continue testing the game
+
+    default void invokeDatabase() { // invoke this method at the end of a game
+        JFrame newFrame = new JFrame("Database Information");
+        newFrame.setSize(400,400);
+        newFrame.setResizable(false);
+        newFrame.setVisible(true);
+    }
 
     default void resetSlots(boardButton[][] slots) { // makes all slots empty for a new game
         for (int i = 0; i<6; i++) {
