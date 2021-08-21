@@ -33,12 +33,11 @@ public interface Logic { //As of 7/20/21 2:32 pm - continue testing the game
             DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
             String stringifyDate = dateFormat.format(date).substring(0,10);
             String stringifyTime = dateFormat.format(date).substring(11);
-            System.out.println(stringifyDate);
-            System.out.println(stringifyTime);
 
             Class.forName("com.mysql.jdbc.Driver");
             con = DriverManager.getConnection("jdbc:mysql://localhost/pentago_db?characterEncoding=latin1","root","password");
             Statement st = con.createStatement();
+            String truncateQuery = "truncate game_table"; // this query gets executed when there are 5 or more rows
             //e.g "INSERT INTO InsertDemo " + "VALUES (1, 'John', 34)";
             String insertQuery = "insert into game_table(game_winner,slots_filled,game_date,game_time)" +
                     " values ('" + victor + "','" + numChipsPlaced +"','"+stringifyDate+"','"+stringifyTime+"')";
@@ -60,12 +59,15 @@ public interface Logic { //As of 7/20/21 2:32 pm - continue testing the game
                 currentString += result.getString("game_time"); // append the time at which the game is finished
                 queryStrings.add(currentString); // push the stringified into the queryStrings arraylist
             }
+            if (queryStrings.size() >= 5) { // this resets/truncates the scoreboard once it has 5 or more rows
+                st.execute(truncateQuery);
+            }
             con.close();
-            alertBoxMessage.append("ID|WIN|SLOTS|DATE|TIME").append("\n");
+            alertBoxMessage.append("ID    |  WIN  |  SLOTS  |     DATE     |           TIME    ").append("\n");
             for (String queryString : queryStrings) {
                 alertBoxMessage.append(queryString).append("\n"); // ensures there is a new line after each row
             }
-            JOptionPane.showMessageDialog(null, alertBoxMessage); // this box shows all the rows from the table
+            JOptionPane.showMessageDialog(null, alertBoxMessage,"Database Info/Scoreboard", JOptionPane.INFORMATION_MESSAGE); // this box shows all the rows from the table
         }
 
         catch(SQLException | ClassNotFoundException ex) {
