@@ -76,7 +76,7 @@ public interface Logic {
             if (queryStrings.size() >= 5) { // this resets/truncates the scoreboard once it has 5 or more rows
                 st.execute(truncateQuery);
             }
-            con.close();
+            con.close(); // Always make sure that you close the connection after you're done using it..
             alertBoxMessage.append("ID    |  WIN  |  SLOTS  |     DATE     |           TIME    ").append("\n");
             for (String queryString : queryStrings) {
                 alertBoxMessage.append(queryString).append("\n"); // ensures there is a new line after each row
